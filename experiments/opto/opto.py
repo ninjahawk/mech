@@ -122,15 +122,19 @@ def set_silence(model, mask):
         m.silence = mask
 
 
-def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0):
+def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0, labeled=None):
     """Gradient routing. ADD examples may update embeddings/unembedding but, inside
     the MLPs, only the pre-designated `region` units.
       routed="loose":  all other data updates every parameter
       routed="strict": all other data updates everything EXCEPT the region units
     p_silence: on non-ADD examples, zero the region units with this probability, so
-    the rest of the network learns not to depend on them."""
+    the rest of the network learns not to depend on them.
+    labeled: optional bool mask; only labeled ADD rows are routed, unlabeled ADD rows
+    are treated like any other data (imperfect labels)."""
     opt, sched = make_opt(model, lr, steps)
     is_t = T == TARGET
+    if labeled is not None:
+        is_t = is_t & labeled
     for _ in range(steps):
         opt.zero_grad()
         if routed:
