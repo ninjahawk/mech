@@ -89,8 +89,11 @@ class Model(nn.Module):
         self.ms = nn.ModuleList([MLP(d, m) for _ in range(layers)])
         self.unemb = nn.Linear(d, P)
 
+    def embed(self, x):
+        return self.ea(x[:, 1]) + self.eb(x[:, 2]) + self.et(x[:, 0])
+
     def forward(self, x):
-        h = self.ea(x[:, 1]) + self.eb(x[:, 2]) + self.et(x[:, 0])
+        h = self.embed(x)
         for m in self.ms:
             h = h + m(h)
         return self.unemb(h)
@@ -122,25 +125,88 @@ def set_silence(model, mask):
         m.silence = mask
 
 
-def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0, labeled=None):
+@torch.no_grad()
+def region_dependence(model, X, Y):
+    """Per-example loss increase when the region units are silenced: how much the
+    model relies on the switch units for this example."""
+    base = F.cross_entropy(model(X), Y, reduction="none")
+    set_silence(model, torch.ones(len(X), 1, dtype=torch.bool))
+    sil = F.cross_entropy(model(X), Y, reduction="none")
+    set_silence(model, None)
+    return sil - base
+
+
+def probe_tags(model, X, known_t, iters=200, thresh=0.5, l2=0.0):
+    """Positive-unlabeled tagging from the model's own activations. Fit a linear probe
+    to separate labeled-target rows from all other rows, then rescale by the probe's
+    mean score on labeled rows (Elkan & Noto 2008) to estimate P(target | x)."""
+    with torch.no_grad():
+        h = model.embed(X)
+        h = (h - h.mean(0)) / (h.std(0) + 1e-6)
+    w = torch.zeros(h.shape[1], requires_grad=True)
+    b = torch.zeros(1, requires_grad=True)
+    opt = torch.optim.Adam([w, b], lr=0.05)
+    y = known_t.float()
+    for _ in range(iters):
+        loss = F.binary_cross_entropy_with_logits(h @ w + b, y) + l2 * (w * w).sum()
+        opt.zero_grad(); loss.backward(); opt.step()
+    with torch.no_grad():
+        g = torch.sigmoid(h @ w + b)
+        c = g[known_t].mean()
+        return (g / c) > thresh
+
+
+def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0, labeled=None,
+          tag=False, tag_tau=1.0, tag_warmup=300, stats=None, tag_every=50, tag_thresh=0.5, tag_l2=0.0):
     """Gradient routing. ADD examples may update embeddings/unembedding but, inside
     the MLPs, only the pre-designated `region` units.
       routed="loose":  all other data updates every parameter
       routed="strict": all other data updates everything EXCEPT the region units
     p_silence: on non-ADD examples, zero the region units with this probability, so
     the rest of the network learns not to depend on them.
-    labeled: optional bool mask; only labeled ADD rows are routed, unlabeled ADD rows
-    are treated like any other data (imperfect labels)."""
+    labeled: optional bool mask; only labeled ADD rows are known to be ADD. Without
+    `tag`, unlabeled ADD rows are treated like any other data (imperfect labels).
+    tag="probe": every `tag_every` steps, a positive-unlabeled linear probe on the
+    model's own activations decides which unlabeled rows are target.
+    tag="dep": activity-dependent tagging. Unlabeled rows are held out for the first
+    `tag_warmup` steps (so the region learns the target from labeled rows alone);
+    after that, an unlabeled row whose loss rises by more than `tag_tau` nats when the
+    region is silenced is treated as target for that step, the rest as retain."""
     opt, sched = make_opt(model, lr, steps)
-    is_t = T == TARGET
+    known_t = T == TARGET
     if labeled is not None:
-        is_t = is_t & labeled
-    for _ in range(steps):
+        known_t = known_t & labeled
+    unl = ~known_t if (tag and labeled is not None) else torch.zeros_like(known_t)
+    probe_hit = None
+    for step in range(steps):
         opt.zero_grad()
         if routed:
-            n_ret = int((~is_t).sum())
+            is_t, use = known_t.clone(), torch.ones_like(known_t)
+            if unl.any() and tag == "probe":
+                if step % tag_every == 0:
+                    probe_hit = probe_tags(model, X, known_t, thresh=tag_thresh, l2=tag_l2) & unl
+                    if stats is not None and step % 100 == 0:
+                        true_t = (T == TARGET) & unl
+                        stats.append(dict(step=step, tagged=int(probe_hit.sum()),
+                                          recall=float((probe_hit & true_t).sum() / max(1, true_t.sum())),
+                                          precision=float((probe_hit & true_t).sum() / max(1, probe_hit.sum()))))
+                is_t |= probe_hit
+            elif unl.any():
+                if step < tag_warmup:
+                    use = ~unl
+                else:
+                    idx = unl.nonzero().squeeze(1)
+                    hit = region_dependence(model, X[idx], Y[idx]) > tag_tau
+                    is_t[idx[hit]] = True
+                    if stats is not None and step % 100 == 0:
+                        true_t = T[idx] == TARGET
+                        stats.append(dict(step=step, tagged=int(hit.sum()),
+                                          recall=float((hit & true_t).sum() / max(1, true_t.sum())),
+                                          precision=float((hit & true_t).sum() / max(1, hit.sum()))))
+            ret = use & ~is_t
+            n_ret = int(ret.sum())
             set_silence(model, (torch.rand(n_ret, 1) < p_silence) if p_silence else None)
-            (F.cross_entropy(model(X[~is_t]), Y[~is_t], reduction="sum") / len(X)).backward()
+            (F.cross_entropy(model(X[ret]), Y[ret], reduction="sum") / len(X)).backward()
             set_silence(model, None)
             if routed == "strict":
                 mask_mlp_grads(model, keep_region=False)
