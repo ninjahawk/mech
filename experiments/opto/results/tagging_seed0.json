@@ -1,0 +1,818 @@
+[
+ {
+  "seed": 0,
+  "frac": 0.05,
+  "tag": "probe",
+  "thresh": 0.2,
+  "l2": 0.0,
+  "tau": 1.0,
+  "warmup": 300,
+  "on": [
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "off": [
+   0.08040200918912888,
+   0.9945945739746094,
+   0.9883720874786377,
+   0.9766082167625427
+  ],
+  "relearn_add": 0.14070351421833038,
+  "tag_stats": [
+   {
+    "step": 0,
+    "tagged": 1355,
+    "recall": 0.9889655113220215,
+    "precision": 0.5291513204574585
+   },
+   {
+    "step": 100,
+    "tagged": 1337,
+    "recall": 0.9903448224067688,
+    "precision": 0.5370231866836548
+   },
+   {
+    "step": 200,
+    "tagged": 1302,
+    "recall": 0.9765517115592957,
+    "precision": 0.5437787771224976
+   },
+   {
+    "step": 300,
+    "tagged": 1269,
+    "recall": 0.973793089389801,
+    "precision": 0.5563435554504395
+   },
+   {
+    "step": 400,
+    "tagged": 1302,
+    "recall": 0.9793103337287903,
+    "precision": 0.5453149080276489
+   },
+   {
+    "step": 500,
+    "tagged": 1443,
+    "recall": 0.9875862002372742,
+    "precision": 0.4961884915828705
+   },
+   {
+    "step": 600,
+    "tagged": 1512,
+    "recall": 0.9889655113220215,
+    "precision": 0.4742063581943512
+   },
+   {
+    "step": 700,
+    "tagged": 1463,
+    "recall": 1.0,
+    "precision": 0.4955570697784424
+   },
+   {
+    "step": 800,
+    "tagged": 1505,
+    "recall": 1.0,
+    "precision": 0.48172757029533386
+   },
+   {
+    "step": 900,
+    "tagged": 1574,
+    "recall": 1.0,
+    "precision": 0.46060991287231445
+   },
+   {
+    "step": 1000,
+    "tagged": 1674,
+    "recall": 1.0,
+    "precision": 0.4330943822860718
+   },
+   {
+    "step": 1100,
+    "tagged": 1744,
+    "recall": 1.0,
+    "precision": 0.41571101546287537
+   },
+   {
+    "step": 1200,
+    "tagged": 1770,
+    "recall": 1.0,
+    "precision": 0.4096045196056366
+   },
+   {
+    "step": 1300,
+    "tagged": 1706,
+    "recall": 1.0,
+    "precision": 0.42497068643569946
+   },
+   {
+    "step": 1400,
+    "tagged": 1723,
+    "recall": 1.0,
+    "precision": 0.42077770829200745
+   },
+   {
+    "step": 1500,
+    "tagged": 1749,
+    "recall": 1.0,
+    "precision": 0.41452258825302124
+   },
+   {
+    "step": 1600,
+    "tagged": 1751,
+    "recall": 1.0,
+    "precision": 0.4140491187572479
+   },
+   {
+    "step": 1700,
+    "tagged": 1670,
+    "recall": 1.0,
+    "precision": 0.4341317415237427
+   },
+   {
+    "step": 1800,
+    "tagged": 1685,
+    "recall": 1.0,
+    "precision": 0.4302670657634735
+   },
+   {
+    "step": 1900,
+    "tagged": 1682,
+    "recall": 1.0,
+    "precision": 0.43103447556495667
+   },
+   {
+    "step": 2000,
+    "tagged": 1670,
+    "recall": 1.0,
+    "precision": 0.4341317415237427
+   },
+   {
+    "step": 2100,
+    "tagged": 1656,
+    "recall": 1.0,
+    "precision": 0.43780192732810974
+   },
+   {
+    "step": 2200,
+    "tagged": 1641,
+    "recall": 1.0,
+    "precision": 0.44180378317832947
+   },
+   {
+    "step": 2300,
+    "tagged": 1602,
+    "recall": 1.0,
+    "precision": 0.45255929231643677
+   },
+   {
+    "step": 2400,
+    "tagged": 1587,
+    "recall": 1.0,
+    "precision": 0.4568367898464203
+   },
+   {
+    "step": 2500,
+    "tagged": 1605,
+    "recall": 1.0,
+    "precision": 0.4517133831977844
+   },
+   {
+    "step": 2600,
+    "tagged": 1611,
+    "recall": 1.0,
+    "precision": 0.450031042098999
+   },
+   {
+    "step": 2700,
+    "tagged": 1620,
+    "recall": 1.0,
+    "precision": 0.4475308656692505
+   },
+   {
+    "step": 2800,
+    "tagged": 1625,
+    "recall": 1.0,
+    "precision": 0.446153849363327
+   },
+   {
+    "step": 2900,
+    "tagged": 1628,
+    "recall": 1.0,
+    "precision": 0.4453316926956177
+   }
+  ]
+ },
+ {
+  "seed": 0,
+  "frac": 0.1,
+  "tag": "probe",
+  "thresh": 0.2,
+  "l2": 0.0,
+  "tau": 1.0,
+  "warmup": 300,
+  "on": [
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "off": [
+   0.11055276542901993,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "relearn_add": 0.1658291518688202,
+  "tag_stats": [
+   {
+    "step": 0,
+    "tagged": 828,
+    "recall": 0.9839416146278381,
+    "precision": 0.8140096664428711
+   },
+   {
+    "step": 100,
+    "tagged": 813,
+    "recall": 0.9766423106193542,
+    "precision": 0.8228782415390015
+   },
+   {
+    "step": 200,
+    "tagged": 820,
+    "recall": 0.9722627997398376,
+    "precision": 0.8121951222419739
+   },
+   {
+    "step": 300,
+    "tagged": 810,
+    "recall": 0.9795620441436768,
+    "precision": 0.8283950686454773
+   },
+   {
+    "step": 400,
+    "tagged": 824,
+    "recall": 0.9839416146278381,
+    "precision": 0.8179611563682556
+   },
+   {
+    "step": 500,
+    "tagged": 824,
+    "recall": 0.9912408590316772,
+    "precision": 0.8240291476249695
+   },
+   {
+    "step": 600,
+    "tagged": 806,
+    "recall": 0.9883211851119995,
+    "precision": 0.8399503827095032
+   },
+   {
+    "step": 700,
+    "tagged": 797,
+    "recall": 0.9941605925559998,
+    "precision": 0.8544542193412781
+   },
+   {
+    "step": 800,
+    "tagged": 792,
+    "recall": 0.9970802664756775,
+    "precision": 0.8623737096786499
+   },
+   {
+    "step": 900,
+    "tagged": 796,
+    "recall": 0.9970802664756775,
+    "precision": 0.8580402135848999
+   },
+   {
+    "step": 1000,
+    "tagged": 798,
+    "recall": 1.0,
+    "precision": 0.8583959937095642
+   },
+   {
+    "step": 1100,
+    "tagged": 800,
+    "recall": 1.0,
+    "precision": 0.856249988079071
+   },
+   {
+    "step": 1200,
+    "tagged": 797,
+    "recall": 1.0,
+    "precision": 0.8594730496406555
+   },
+   {
+    "step": 1300,
+    "tagged": 803,
+    "recall": 1.0,
+    "precision": 0.8530510663986206
+   },
+   {
+    "step": 1400,
+    "tagged": 792,
+    "recall": 0.9985401630401611,
+    "precision": 0.8636363744735718
+   },
+   {
+    "step": 1500,
+    "tagged": 790,
+    "recall": 0.9970802664756775,
+    "precision": 0.8645569682121277
+   },
+   {
+    "step": 1600,
+    "tagged": 796,
+    "recall": 0.9941605925559998,
+    "precision": 0.8555276393890381
+   },
+   {
+    "step": 1700,
+    "tagged": 794,
+    "recall": 1.0,
+    "precision": 0.8627204298973083
+   },
+   {
+    "step": 1800,
+    "tagged": 798,
+    "recall": 1.0,
+    "precision": 0.8583959937095642
+   },
+   {
+    "step": 1900,
+    "tagged": 805,
+    "recall": 1.0,
+    "precision": 0.850931704044342
+   },
+   {
+    "step": 2000,
+    "tagged": 811,
+    "recall": 1.0,
+    "precision": 0.8446362614631653
+   },
+   {
+    "step": 2100,
+    "tagged": 816,
+    "recall": 1.0,
+    "precision": 0.8394607901573181
+   },
+   {
+    "step": 2200,
+    "tagged": 820,
+    "recall": 1.0,
+    "precision": 0.8353658318519592
+   },
+   {
+    "step": 2300,
+    "tagged": 826,
+    "recall": 1.0,
+    "precision": 0.8292978405952454
+   },
+   {
+    "step": 2400,
+    "tagged": 826,
+    "recall": 1.0,
+    "precision": 0.8292978405952454
+   },
+   {
+    "step": 2500,
+    "tagged": 821,
+    "recall": 0.9985401630401611,
+    "precision": 0.8331303000450134
+   },
+   {
+    "step": 2600,
+    "tagged": 830,
+    "recall": 1.0,
+    "precision": 0.8253012299537659
+   },
+   {
+    "step": 2700,
+    "tagged": 834,
+    "recall": 1.0,
+    "precision": 0.821342945098877
+   },
+   {
+    "step": 2800,
+    "tagged": 840,
+    "recall": 1.0,
+    "precision": 0.8154761791229248
+   },
+   {
+    "step": 2900,
+    "tagged": 841,
+    "recall": 1.0,
+    "precision": 0.8145065307617188
+   }
+  ]
+ },
+ {
+  "seed": 0,
+  "frac": 0.25,
+  "tag": "probe",
+  "thresh": 0.2,
+  "l2": 0.0,
+  "tau": 1.0,
+  "warmup": 300,
+  "on": [
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "off": [
+   0.10552763938903809,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "relearn_add": 0.10552763938903809,
+  "tag_stats": [
+   {
+    "step": 0,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 100,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 200,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 300,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 400,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 500,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 600,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 700,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 800,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 900,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1000,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1100,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1200,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1300,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1400,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1500,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1600,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1700,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1800,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1900,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2000,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2100,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2200,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2300,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2400,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2500,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2600,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2700,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2800,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2900,
+    "tagged": 559,
+    "recall": 1.0,
+    "precision": 1.0
+   }
+  ]
+ },
+ {
+  "seed": 0,
+  "frac": 0.5,
+  "tag": "probe",
+  "thresh": 0.2,
+  "l2": 0.0,
+  "tau": 1.0,
+  "warmup": 300,
+  "on": [
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "off": [
+   0.10552763938903809,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "relearn_add": 0.10552763938903809,
+  "tag_stats": [
+   {
+    "step": 0,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 100,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 200,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 300,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 400,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 500,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 600,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 700,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 800,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 900,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1000,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1100,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1200,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1300,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1400,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1500,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1600,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1700,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1800,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 1900,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2000,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2100,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2200,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2300,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2400,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2500,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2600,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2700,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2800,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   {
+    "step": 2900,
+    "tagged": 378,
+    "recall": 1.0,
+    "precision": 1.0
+   }
+  ]
+ }
+]

@@ -157,13 +157,15 @@ def probe_tags(model, X, known_t, iters=200, thresh=0.5, l2=0.0):
 
 
 def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0, labeled=None,
-          tag=False, tag_tau=1.0, tag_warmup=300, stats=None, tag_every=50, tag_thresh=0.5, tag_l2=0.0):
+          tag=False, tag_tau=1.0, tag_warmup=300, stats=None, tag_every=50, tag_thresh=0.5, tag_l2=0.0, known_target=None):
     """Gradient routing. ADD examples may update embeddings/unembedding but, inside
     the MLPs, only the pre-designated `region` units.
       routed="loose":  all other data updates every parameter
       routed="strict": all other data updates everything EXCEPT the region units
     p_silence: on non-ADD examples, zero the region units with this probability, so
     the rest of the network learns not to depend on them.
+    known_target: optional bool mask that overrides which rows are labeled target,
+    e.g. to inject label noise.
     labeled: optional bool mask; only labeled ADD rows are known to be ADD. Without
     `tag`, unlabeled ADD rows are treated like any other data (imperfect labels).
     tag="probe": every `tag_every` steps, a positive-unlabeled linear probe on the
@@ -176,6 +178,8 @@ def train(model, X, Y, T, steps, routed=None, lr=1e-2, p_silence=0.0, labeled=No
     known_t = T == TARGET
     if labeled is not None:
         known_t = known_t & labeled
+    if known_target is not None:  # explicit (possibly noisy) target labels
+        known_t = known_target
     unl = ~known_t if (tag and labeled is not None) else torch.zeros_like(known_t)
     probe_hit = None
     for step in range(steps):

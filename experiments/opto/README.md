@@ -75,8 +75,8 @@ Silencing is the ingredient that matters. Without it, the rest of the network le
 same problem: silencing a cell type disrupts the downstream circuits that relied on its
 normal activity.
 
-**4. The catch: it needs every target example to be labeled** (`label_frac.py`). With
-only part of the ADD data labeled:
+**4. With partial labels, plain routing fails** (`label_frac.py`). With only part of
+the ADD data labeled:
 
 | Labeled | Silencing | ADD after off | Others after off | ADD after relearning |
 |---|---|---|---|---|
@@ -86,45 +86,73 @@ only part of the ADD data labeled:
 
 Unlabeled ADD examples get treated as ordinary data. With silencing, they teach the rest
 of the network to do ADD on its own, so switching off the ADD units does nothing. Without
-silencing, the switch removes ADD but damages the other skills, the same failure as the
-post-hoc methods. **With imperfect labels, the advantage disappears.**
+silencing, the switch damages the other skills, just like the post-hoc methods.
+
+**5. Fix: tag the unlabeled target data with a probe on the model's own activations**
+(`tagging.py`). In neuroscience, cells are tagged by a marker they express. Here, every
+50 steps a linear probe is trained on the model's own embedding activations to separate
+labeled-ADD rows from everything else. Its scores get the positive-unlabeled correction
+of Elkan & Noto (2008), which accounts for hidden ADD rows in the unlabeled pool. Rows
+the probe flags are routed into the switch; everything else trains as normal, with
+silencing. The threshold is set to favor recall (0.2): a missed target example teaches
+the rest of the network ADD, while a false tag costs little.
+
+| ADD labeled | ADD after off ↓ | Others after off | ADD after relearning ↓ | Tag recall / precision |
+|---|---|---|---|---|
+| 5% | 0.12 ± 0.03 | 0.99 | 0.19 ± 0.03 | 1.00 / 0.48 |
+| 10% | 0.10 ± 0.02 | 1.00 | 0.15 ± 0.03 | 1.00 / 0.83 |
+| 25% | 0.10 ± 0.03 | 1.00 | 0.14 ± 0.03 | 1.00 / 1.00 |
+| 50% | 0.09 ± 0.02 | 1.00 | 0.14 ± 0.04 | 1.00 / 1.00 |
+| *full labels (for reference)* | *0.09* | *1.00* | *0.14* | – |
+
+From 5% labels, the switch matches the fully labeled version on all three metrics. With
+the switch on, every skill stays at 1.00.
+
+**Noisy labels** (10% labeled, and a fifth of those labels are actually other tasks):
+it holds in 3 of 4 seeds (ADD 0.10–0.12, others 0.99–1.00, relearning 0.15–0.17). In
+seed 3 the model was weaker even with the switch on (ADD2 0.83), and switching off cost
+up to 0.25 on ADD2.
+
+Two approaches that failed:
+- **Tagging by dependence** ("does silencing the region raise this example's loss?").
+  At low label rates the region never learns ADD well enough to be relied on, so it
+  tagged nothing (recall ≈ 0).
+- **An L2-regularized probe.** It over-tagged and, at 5% labels, broke training.
 
 ## Takeaway
 
-The optogenetics approach is a real advantage in this toy: a built-in switch is cleaner
-and more durable than the best switch found afterwards. But it inherits optogenetics' own
-prerequisite. You must be able to tag the target "cell type" reliably during development.
-In neuroscience that tag is a genetic promoter. In AI it's a label on the training data,
-and real data won't be fully labeled.
+In this toy, the optogenetics approach works from start to finish. Install a switch
+during training, tag the target data with a probe on the model's own activations,
+silence the switch during other training, and you get a switch that is:
+- **complete:** ADD falls to about 0.10, vs the oracle's 0.04;
+- **specific:** zero damage to near-neighbor skills, where post-hoc methods lose 33–69
+  points;
+- **durable:** ADD relearns to about 0.15, vs 0.24–0.63 for post-hoc;
+- **free:** no accuracy cost while the switch is on;
+- **cheap to label:** it needs only 5% of the target data labeled.
 
-So the open problem is not "build a better switch". It's **installing a switch from
-imperfect labels**.
+## What would make this a real result
 
-## Where to look next
-
-1. **Activity-dependent tagging.** Neuroscience has an answer to "we can't label every
-   cell": methods like TRAP and engram tagging label whichever cells were *active during
-   an experience*. The AI version: use the switch units' own activity to find unlabeled
-   target examples during training, then route those too. Testing this needs a task
-   where labels aren't trivially recoverable, unlike this toy, where the task token gives
-   them away.
-2. **Make silencing label-robust.** Silencing only on examples confidently judged
-   non-target, or a schedule that starts strict and relaxes.
-3. **Scale.** Repeat on a small transformer language model with a natural target (one
-   language, one domain), with partial and noisy labels. Compare against an SAE-feature
-   ablation baseline, then test the switch-on direction too (does activating the units
-   induce the behavior?).
-4. **Adversarial durability.** Larger fine-tuning budgets, and attacks that try to
-   reroute ADD around the switched-off units.
+1. **The probe's job here is easy.** The task token gives ADD away to a linear probe. In
+   a language model the target (a language, a topic, a dangerous capability) is fuzzier.
+   The next test is a small transformer language model with a natural target and a few
+   percent of it labeled, comparing tag recall and switch quality against SAE-feature
+   ablation.
+2. **Scale and architecture:** attention layers, residual-stream routing, many switches
+   at once.
+3. **Adversarial durability:** larger fine-tuning budgets, and attacks that try to route
+   ADD around the switch.
 
 ## Caveats
 
 - This is a toy: one small MLP, synthetic tasks, and a 31-number modular-arithmetic space.
 - Post-hoc handles here are individual units. SAE features, which can be more
   monosemantic, were not tested.
-- Gradient routing is existing work (Cloud et al., 2024). What's new here is the
-  head-to-head comparison against post-hoc handles, the separate test of each ingredient,
-  and the partial-label failure analysis.
+- Gradient routing is existing work (Cloud et al., 2024), and so is positive-unlabeled
+  learning (Elkan & Noto, 2008). What's new here is the head-to-head comparison against
+  post-hoc handles, the separate test of each ingredient (silencing is the key one), the
+  partial-label failure, and combining routing with online tagging by a probe on the
+  model's own activations, which fixes that failure.
 
 ## Reproduce
 
@@ -133,5 +161,7 @@ pip install torch numpy matplotlib
 for s in 0 1 2 3; do python opto.py --seed $s --out results/seed$s.json & done; wait
 python analyze.py
 for s in 0 1 2 3; do python label_frac.py --seed $s --out results/labelfrac_seed$s.json & done
+for s in 0 1 2 3; do python tagging.py --seed $s --thresh 0.2 --out results/tagging_seed$s.json & done
+for s in 0 1 2 3; do python tagging.py --seed $s --thresh 0.2 --fracs 0.1 --noise 0.2 --out results/tagging_noise_seed$s.json & done
 ```
 On 4 CPU cores this takes about 40 minutes.
